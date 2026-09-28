@@ -4,7 +4,7 @@ export class Level {
         const layerSettings = {
             tileWidth: 16,
             tileHeight: 12,
-            tiles: mappings,
+            tiles: mappings
         }
 
         this.map = []
@@ -13,7 +13,7 @@ export class Level {
         }
 
         for (const layer of this.map) {
-            layer.use(scale(4))
+            layer.use(scale)
         }
 
     }
