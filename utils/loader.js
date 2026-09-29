@@ -42,7 +42,36 @@ export const load = {
                 br: 8,
             },
         })
-
+        loadSprite("water", "./assets/Water.png", {
+            sliceX: 8,
+            sliceY: 1,
+            anims: {
+                wave: {
+                    from: 0,
+                    to: 7,
+                    speed: 16,
+                    loop: true,
+                }
+            },
+        })
+        loadSprite("player", "./assets/Player.png", {
+        sliceX: 4,
+        sliceY: 6,
+        anims: {
+            idle: {
+            from: 0,
+            to: 3,
+            loop: true,
+            },
+            run: {
+            from: 4,
+            to: 7,
+            loop: true,
+            },
+            "jump-up": 8,
+            "jump-down": 9,
+        },
+        })
     },
     sounds: () => {
         loadSound("confirm-ui", "./sounds/confirm-ui.wav")
