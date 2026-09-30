@@ -1,10 +1,11 @@
 import { level1Layout, level1Mappings } from "./content/level1/level1Layout.js"
 import { Player } from "./entities/Player.js"
 import kaboom from "./libs/kaboom.mjs"
-import { attachCamera } from "./utils/Camera.js"
+import { attachCamera } from "./utils/camera.js"
 import { Level } from "./utils/Level.js"
 import { uiManager } from "./utils/UIManager.js"
 import { load } from "./utils/loader.js"
+import { level1Config } from "./content/level1/config.js"
 
 kaboom({
     width: 1280,
@@ -15,7 +16,6 @@ kaboom({
 load.fonts()
 load.sounds()
 load.assets()
-
 const scenes = {
     menu: () => {
         uiManager.displayMainMenu()
@@ -32,14 +32,16 @@ const scenes = {
         level1.drawMapLayout(level1Layout, level1Mappings)
 
         const player = new Player (
-            1500,
-            100,
-            400,
-            650,
-            3,
+            level1Config.playerStartPosX,
+            level1Config.playerStartPosY,
+            level1Config.playerSpeed,
+            level1Config.jumpForce,
+            level1Config.nbLives,
             1,
             false
         )
+        player.enablePassthrough()
+        player.update()
 
         attachCamera(player.gameObj, 0, 200)
 

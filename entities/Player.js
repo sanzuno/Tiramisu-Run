@@ -1,4 +1,6 @@
 export class Player {
+  isRespawning = false
+
   constructor(
     posX,
     posY,
@@ -13,6 +15,7 @@ export class Player {
     this.initialX = posX
     this.initialY = posY
     this.makePlayer()
+    this.setPlayerControls()
     this.speed = speed
     this.jumpForce = jumpForce
     this.lives = nbLives
@@ -29,6 +32,65 @@ export class Player {
       body(),
       "player",
     ])
+  }
+
+  enablePassthrough() {
+    this.gameObj.onBeforePhysicsResolve((collision) => {
+      if (collision.target.is("passthrough") && this.gameObj.isJumping()) {
+        collision.preventResolution()
+      }
+
+      if(collision.target.is("passthrough") && isKeyDown("down")) {
+        collision.preventResolution()
+      }
+
+    })
+  }
+
+  setPlayerControls() {
+    onKeyDown("left", () => {
+      if (this.gameObj.paused) return
+      if (this.gameObj.curAnim() !== "run") this.gameObj.play("run")
+      this.gameObj.flipX = true
+      if(!this.isRespawning) this.gameObj.move(-this.speed, 0)
+    })
+
+    onKeyDown("right", () => {
+      if (this.gameObj.paused) return
+      if (this.gameObj.curAnim() !== "run") this.gameObj.play("run")
+      this.gameObj.flipX = false
+      if(!this.isRespawning) this.gameObj.move(this.speed, 0)
+    })
+
+    onKeyDown("space", () => {
+      if (this.gameObj.isGrounded()&& !this.isRespawning) {
+        this.gameObj.jump(this.jumpForce)
+        play("jump")
+      }
+    })
+
+    onKeyRelease(() => {
+      if (isKeyReleased("right") || isKeyReleased("left")) {
+        this.gameObj.play("idle")
+      }      
+    })
+  }
+
+  respawnplayer() {
+    if (this.lives > 0) {
+      this.gameObj.pos = vec2(this.initialX, this.initialY)
+      this.isRespawning = true
+      setTimeout(() => this.isRespawning = false, 1000)
+    }
+  }
+
+  update() {
+    onUpdate(() => {
+      if (this.gameObj.pos.y > 1000) {
+        play("hit", { speed: 1.5 })
+        this.respawnplayer()
+      }
+    })
   }
   
 }
