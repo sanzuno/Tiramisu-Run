@@ -41,7 +41,14 @@ const scenes = {
             false
         )
         player.enablePassthrough()
+        player.enableCoinPickUp()
         player.update()
+
+        uiManager.displayCoinCount()
+        player.updateCoinCount(uiManager.coinCountUI)
+
+        uiManager.displayLivesCount()
+        player.updateLives(uiManager.livesCountUI)
 
         attachCamera(player.gameObj, 0, 200)
 

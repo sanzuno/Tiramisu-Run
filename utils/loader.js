@@ -10,6 +10,8 @@ export const load = {
         loadSprite("space", "./assets/Space_Key_Dark.png")
 
         loadSprite("coin", "./assets/Coin.png")
+        loadSprite("coin-icon", "./assets/Coins_Ui.png")
+        loadSprite("star-icon", "./assets/Stars_Ui.png")
         loadSprite("bridge", "./assets/Bridge.png")
         loadSprite("forest-background", "./assets/Forest_Background_0.png")
         loadSprite("logo", "./assets/Logo.png")
@@ -77,5 +79,6 @@ export const load = {
         loadSound("confirm-ui", "./sounds/confirm-ui.wav")
         loadSound("jump", "./sounds/jump.wav")
         loadSound("hit", "./sounds/hit.wav")
+        loadSound("coin", "./sounds/coin.wav")
     }
 }

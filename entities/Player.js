@@ -2,6 +2,8 @@ export class Player {
   heightDelta = 0
   isMoving = false
   isRespawning = false
+  coyoteLapse = 0.1
+  coins = 0
 
 
   constructor(
@@ -50,6 +52,14 @@ export class Player {
     })
   }
 
+  enableCoinPickUp() {
+    this.gameObj.onCollide("coin", (coin) => {
+      this.coins++
+      destroy(coin)
+      play("coin")
+    })
+  }
+
   setPlayerControls() {
     onKeyDown("left", () => {
       if (this.gameObj.paused) return
@@ -68,10 +78,22 @@ export class Player {
     })
 
     onKeyDown("space", () => {
+      this.hasJumpOnce = true
       if (this.gameObj.isGrounded()&& !this.isRespawning) {
         this.gameObj.jump(this.jumpForce)
         play("jump")
       }
+
+      if(
+        !this.gameObj.isGrounded() &&
+        time() - this.timeSinceLastGrounded < this.coyoteLapse &&
+        !this.hasJumpOnce
+      ) {
+        this.hasJumpOnce = false
+        this.gameObj.jump(this.jumpForce)
+        play("jump")
+      }
+
     })
 
     onKeyRelease(() => {
@@ -84,14 +106,23 @@ export class Player {
 
   respawnplayer() {
     if (this.lives > 0) {
+      this.lives--
       this.gameObj.pos = vec2(this.initialX, this.initialY)
       this.isRespawning = true
       setTimeout(() => this.isRespawning = false, 1000)
+      return
     }
+
+    go("gameover")
+
   }
 
   update() {
     onUpdate(() => {
+      if (this.gameObj.isGrounded()) {
+        this.hasJumpOnce = false
+        this.timeSinceLastGrounded = time()
+      }
       this.heightDelta = this.previousHeight - this.gameObj.pos.y
       this.previousHeight = this.gameObj.pos.y
 
@@ -122,5 +153,17 @@ export class Player {
 
     })
   }
-  
+
+  updateLives(livesCountUI) {
+    onUpdate(() => {
+      livesCountUI.text = this.lives
+    })
+  }
+
+  updateCoinCount(coinCountUI) {
+    onUpdate(() => {
+      coinCountUI.text = `${this.coins} / ${coinCountUI.fullCoinCount}`
+    })
+  }
+
 }
