@@ -13,9 +13,9 @@ export class Player {
     jumpForce,
     nbLives,
     currentLevelScene,
-    isInTerminalScene
+    isInFinalLevel
   ) {
-    this.isInTerminalScene = isInTerminalScene
+    this.isInFinalLevel =  isInFinalLevel
     this.currentLevelScene = currentLevelScene
     this.initialX = posX
     this.initialY = posY
@@ -163,6 +163,9 @@ export class Player {
   updateCoinCount(coinCountUI) {
     onUpdate(() => {
       coinCountUI.text = `${this.coins} / ${coinCountUI.fullCoinCount}`
+      if (this.coins === coinCountUI.fullCoinCount) {
+        go(this.isInFinalLevel ? "end" : this.currentLevelScene + 1)
+      }
     })
   }
 

@@ -155,6 +155,9 @@ class UIManager {
 
 
     }
+    addDarkBg() {
+        add([rect(270, 130), color(0, 0, 0), fixed()])
+    }
 }
 
 export const uiManager = new UIManager()

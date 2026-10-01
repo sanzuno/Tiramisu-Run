@@ -43,10 +43,10 @@ const scenes = {
         player.enablePassthrough()
         player.enableCoinPickUp()
         player.update()
-
+        uiManager.addDarkBg()
         uiManager.displayCoinCount()
         player.updateCoinCount(uiManager.coinCountUI)
-
+        
         uiManager.displayLivesCount()
         player.updateLives(uiManager.livesCountUI)
 
